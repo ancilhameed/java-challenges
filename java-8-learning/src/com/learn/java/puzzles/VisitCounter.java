@@ -37,22 +37,19 @@ public class VisitCounter {
 
 		Stream<Map<String, UserStats>> streamOfMap = Arrays.stream(visits);
 
-		Map<Long, Long> filteredMap = streamOfMap
-				.filter(map -> map != null)
+		Map<Long, Long> filteredMap = streamOfMap.filter(map -> map != null)
 				.flatMap(map -> map.entrySet().stream().filter(p -> {
-			try {
-				Long.parseLong(p.getKey());
-				return true;
-			} catch (NumberFormatException e) {
-				return false;
-			}
-		}).filter(q -> (Objects.nonNull(q.getValue()) && q.getValue().getVisitCount().isPresent())))
+					try {
+						Long.parseLong(p.getKey());
+						return true;
+					} catch (NumberFormatException e) {
+						return false;
+					}
+				}).filter(q -> (Objects.nonNull(q.getValue()) && q.getValue().getVisitCount().isPresent())))
 				.collect(Collectors.toMap(x -> Long.parseLong(x.getKey()), x -> x.getValue().getVisitCount().get()));
 
 		System.out.println(filteredMap);
 
-		
-		
 	}
 
 	class UserStats {
